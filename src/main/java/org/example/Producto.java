@@ -25,4 +25,12 @@ public class Producto {
     public TAMAÑO getTamaño() {
         return tamaño;
     }
+
+    @Override
+    public String toString() {
+        return "Producto :" +
+                "  nombre='" + nombre + '\'' +
+                ", precio=" + precio +
+                ", tamaño=" + tamaño;
+    }
 }

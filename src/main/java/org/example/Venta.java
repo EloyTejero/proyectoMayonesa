@@ -1,25 +1,24 @@
 package org.example;
 
-import java.util.ArrayList;
+
 
 public class Venta {
-    private ArrayList<Combo> combos;
-    private ArrayList<Producto> productos;
+
+    private Pedido pedido;
     private double valorTotal;
 
-    public Venta(ArrayList<Combo> combos, ArrayList<Producto> productos) {
-        this.combos = combos;
-        this.productos = productos;
+    public Venta(Pedido pedido) {
+        this.pedido = pedido;
         valorTotal = calcularValorTotalVenta();
     }
     
     private double calcularValorTotalVenta(){
         double valor=0;
-        for(Producto p:productos){
+        for(Producto p: pedido.getProductos()){
             valor += p.getPrecio();
         }
         /* //cuando este hecho combo
-        for(Combo c:combos){
+        for(Combo c:pedido.getCombos()){
             valor += c.getPrecio();
         }
         */
@@ -27,11 +26,11 @@ public class Venta {
     }
     
     public void imprimirTicket(){
-        System.out.println("Listado de Combos: ");
-        for(Combo c:combos){
+
+       /* for(Combo c: pedido.getCombos()){
             System.out.println(c.toString());
-        }
-        for(Producto p:productos){
+        }*/
+        for(Producto p: pedido.getProductos()){
             System.out.println(p.toString());
         }
         System.out.println("PRECIO TOTAL: "+valorTotal);
