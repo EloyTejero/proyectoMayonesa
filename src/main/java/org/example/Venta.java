@@ -26,7 +26,7 @@ public class Venta {
     }
     
     public void imprimirTicket(){
-
+        System.out.println("VENTA : ----------------");
        /* for(Combo c: pedido.getCombos()){
             System.out.println(c.toString());
         }*/
