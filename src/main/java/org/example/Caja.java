@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Caja {
    private  Balance balance;
     private Usuario usuario;
-    private Ventas <ArrayList> ventas= new ArrayList<Ventas>();
+    private ArrayList<Venta>ventas = new ArrayList<>();
 
     public Caja(Balance balance, Usuario usuario) {
         this.balance = balance;
