@@ -1,5 +1,6 @@
 package org.example;
 
+import static java.lang.Math.abs;
 import org.example.enums.TAMAÑO;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class Combo {
     public void agrandarProducto(Producto aAgrandar, Producto productoAgrandado){
         for (Producto p : productos){
             if ( aAgrandar.getNombre().equals(p.getNombre()) && p.getNombre().equals(productoAgrandado.getNombre())){
-                double diferenciaPrecio = productoAgrandado.getPrecio() - p.getPrecio();
+                double diferenciaPrecio = abs(productoAgrandado.getPrecio() - p.getPrecio());
                 precio = precio + diferenciaPrecio;
                 productos.remove(p);
                 productos.add(productoAgrandado);
@@ -44,7 +45,7 @@ public class Combo {
     public void achicarProducto(Producto aAchicar, Producto productoAchicado){
         for (Producto p : productos){
             if ( aAchicar.getNombre().equals(p.getNombre()) && p.getNombre().equals(productoAchicado.getNombre())){
-                double diferenciaPrecio = productoAchicado.getPrecio() - p.getPrecio();
+                double diferenciaPrecio = abs(productoAchicado.getPrecio() - p.getPrecio());
                 precio = precio - diferenciaPrecio;
                 productos.remove(p);
                 productos.add(productoAchicado);
