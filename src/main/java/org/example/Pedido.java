@@ -3,11 +3,11 @@ package org.example;
 import java.util.ArrayList;
 
 public class Pedido {
-   // private ArrayList<Combo> combos;
+    private ArrayList<Combo> combos;
     private ArrayList<Producto> productos;
 
     public Pedido() {
-       // combos = new ArrayList<>();
+        combos = new ArrayList<>();
         productos = new ArrayList<>();
     }
 
@@ -15,21 +15,21 @@ public class Pedido {
         productos.add(producto);
     }
 
-    /*public void añadirCombo(Combo combo){
+    public void añadirCombo(Combo combo){
         combos.add(combo);
-    }*/
+    }
 
     public void eliminarProducto(Producto producto){
         productos.remove(producto);
     }
 
-    /*public void eliminarCombo(Combo combo){
+    public void eliminarCombo(Combo combo){
         combos.remove(combo);
-    }*/
+    }
 
-   /* public ArrayList<Combo> getCombos() {
+    public ArrayList<Combo> getCombos() {
         return combos;
-    }*/
+    }
 
     public ArrayList<Producto> getProductos() {
         return productos;

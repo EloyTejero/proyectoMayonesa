@@ -17,22 +17,26 @@ public class Venta {
         for(Producto p: pedido.getProductos()){
             valor += p.getPrecio();
         }
-        /* //cuando este hecho combo
+
         for(Combo c:pedido.getCombos()){
             valor += c.getPrecio();
         }
-        */
+
         return valor;
     }
     
     public void imprimirTicket(){
         System.out.println("VENTA : ----------------");
-       /* for(Combo c: pedido.getCombos()){
+        for(Combo c: pedido.getCombos()){
             System.out.println(c.toString());
-        }*/
+        }
         for(Producto p: pedido.getProductos()){
             System.out.println(p.toString());
         }
         System.out.println("PRECIO TOTAL: "+valorTotal);
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
     }
 }

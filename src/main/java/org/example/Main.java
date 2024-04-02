@@ -10,16 +10,28 @@ import java.util.Scanner;
 
 public class Main {
     private static Scanner entrada = new Scanner(System.in);
-  //  private static List<Combo> combos = new ArrayList<>();
+    private static Usuario primerUsuario = new Usuario("Juan",12345, "12", ROL.CAJERO);
+    private static Caja caja = new Caja(new Balance(0),primerUsuario);
+    private static List<Combo> combos = new ArrayList<>();
     private static List<Producto> productos = new ArrayList<>();
     public static void main(String[] args) {
 
-        Usuario primerUsuario = new Usuario("Juan",12345, "12", ROL.CAJERO);
-        Caja caja = new Caja(new Balance(0),primerUsuario);
+
+
         int seguirIngresando = 1;
-      /*  productos.add(new Producto("BIGMAC",400, TAMAÑO.CHICO));
-        productos.add(new Producto("BIGMAC",500, TAMAÑO.MEDIANO));
-        productos.add(new Producto("BIGMAC",600, TAMAÑO.GRANDE));*/
+        productos.add(new Producto("BIGMAC",450, TAMAÑO.CHICO));
+        productos.add(new Producto("BIGMAC",550, TAMAÑO.MEDIANO));
+        productos.add(new Producto("BIGMAC",800, TAMAÑO.GRANDE));
+
+        productos.add(new Producto("PAPAS",200, TAMAÑO.CHICO));
+        productos.add(new Producto("PAPAS",400, TAMAÑO.MEDIANO));
+        productos.add(new Producto("PAPAS",600, TAMAÑO.GRANDE));
+
+        ArrayList<Producto> productosParaCombo = new ArrayList<>();
+        productosParaCombo.add(productos.get(0));
+        productosParaCombo.add(productos.get(3));
+        combos.add(new Combo("MEGADIBU", 2000,productosParaCombo));
+
         do {
             menuCajero();
             System.out.println("DESEA VOLVER AL MENU? 1-SI ,2-NO");
@@ -36,47 +48,24 @@ public class Main {
         System.out.println("Digite la opcion");
         System.out.println("OPCIONES:");
         System.out.println("1- GENERAR VENTA");
-        System.out.println("2- CARGAR PRODUCTO");
+        System.out.println("2- CREAR PRODUCTO");
+        System.out.println("3- CREAR COMBO");
         int opcion = Integer.parseInt(entrada.nextLine());
 
-        switch (opcion){
-            case 1: menuVenta();
-               break;
-            case 2: menuCargarProductos();
-              break;
+        switch (opcion) {
+            case 1 -> menuVenta();
+            case 2 -> menuCrearProducto();
+            case 3 -> menuCrearCombo();
         }
     }
 
     private static void menuVenta(){
-        Pedido pedido = new Pedido();
-
-        int eleccionComida;
-        int seguirIngresando = 1;
-        do {
-            System.out.println("Seleccione si desea ver los 1-COMBOS o  2-PRODUCTOS");
-            int seleccionTipoPedido = Integer.parseInt(entrada.nextLine());
-            if(seleccionTipoPedido == 1){
-                System.out.println("COMBOS EXISTENTES");
-                //mostrarListas(combos);
-                System.out.println("INGRESE EL ID DEL COMBO QUE DESEA AGREGAR");
-                eleccionComida = Integer.parseInt(entrada.nextLine()) -1;
-                //pedido.añadirCombo(combos.get(eleccionComida));
-            }else{
-                mostrarListas(productos);
-                System.out.println("INGRESE EL ID DEL PRODUCTO QUE DESEA AGREGAR");
-                eleccionComida = Integer.parseInt(entrada.nextLine()) -1;
-                pedido.añadirProducto(productos.get(eleccionComida));
-            }
-            System.out.println("DESEA SEGUIR INGRESANDO? 1-SI ,2-NO");
-            seguirIngresando = Integer.parseInt(entrada.nextLine());;
-        }while (seguirIngresando == 1);
-
-        Venta venta = new Venta(pedido);
-        venta.imprimirTicket();
+       VentaService service = new VentaService();
+       service.generarVenta(productos, combos,entrada, caja);
     }
 
 
-    private static void menuCargarProductos(){
+    private static void menuCrearProducto(){
         System.out.println("digite el nombre del producto");
         String nombre = entrada.nextLine();
         System.out.println("digite el precio");
@@ -89,7 +78,25 @@ public class Main {
 
     }
 
+    private static void menuCrearCombo(){
+        List<Producto> productosCombo = new ArrayList<>();
+        System.out.println("digite el nombre del combo");
+        String nombre = entrada.nextLine();
+        System.out.println("digite el precio");
+        double precio = Double.parseDouble(entrada.nextLine());
+        int ingresar = 1;
+        do {
+            System.out.println("ELIJA LOS PRODUCTOS PARA SU COMBO");
+            mostrarListas(productos);
+            System.out.println("INGRESE EL ID del Producto");
+            int id = Integer.parseInt(entrada.nextLine())-1;
+            productosCombo.add(productos.get(id));
+            System.out.println("DESEA SEGUIR CARGANDO PRODUCTOS AL COMBO? 1-SI, 2-NO");
+            ingresar = Integer.parseInt(entrada.nextLine());
+        }while (ingresar == 1);
+        combos.add(new Combo(nombre, precio, productosCombo));
 
+    }
 
 
     private static <E> void mostrarListas (List<E> list){

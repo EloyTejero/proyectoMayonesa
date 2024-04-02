@@ -21,6 +21,12 @@ public class Caja {
     }
     public void AñadirVenta(Venta venta){
         ventas.add(venta);
+        balance.IncrementarBalance(venta.getValorTotal());
     }
+
+    public double getValorFinalBalance(){
+        return balance.getValorFinal();
+    }
+
     
 }

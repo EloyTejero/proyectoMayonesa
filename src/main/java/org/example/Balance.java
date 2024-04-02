@@ -39,17 +39,7 @@ public class Balance {
         return ValorFinal;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
 
-    public void setValorInicio(double ValorInicio) {
-        this.ValorInicio = ValorInicio;
-    }
-
-    public void setValorFinal(double ValorFinal) {
-        this.ValorFinal = ValorFinal;
-    }
     
     
     
