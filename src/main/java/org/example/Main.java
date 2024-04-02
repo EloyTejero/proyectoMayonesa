@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Main {
     private static Scanner entrada = new Scanner(System.in);
     private static Usuario primerUsuario = new Usuario("Juan",12345, "12", ROL.CAJERO);
+    private static Usuario usuarioActual = null;
     private static Caja caja = new Caja(new Balance(0),primerUsuario);
     private static List<Combo> combos = new ArrayList<>();
     private static List<Producto> productos = new ArrayList<>();
@@ -107,6 +108,24 @@ public class Main {
     }
 
 
-
+    private static void login(){
+        UserService userService = UserService.userServiceGetInstance();
+        
+        do{
+            Scanner in = new Scanner(System.in);
+            System.out.print("Ingrese su usuario: ");
+            String user = in.nextLine();
+            System.out.print("Ingrese contraseña: ");
+            String password = in.nextLine();
+            
+            usuarioActual = userService.login(user, password);
+            if(usuarioActual==null){
+                System.out.println("Error en la contraseña o usuario");
+                System.out.println();
+            }
+        }while(usuarioActual==null);
+        
+        System.out.println("Ingreso Exitoso");
+    }
 
 }
