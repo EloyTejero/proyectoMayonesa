@@ -11,15 +11,20 @@ import java.util.Scanner;
 public class Main {
 
     private static Scanner entrada = new Scanner(System.in);
-    private static Usuario primerUsuario = new Usuario("Juan", 12345, "12", ROL.CAJERO);
+    
+    private static Usuario primerUsuario = new Usuario("juan", 12345, "12", ROL.CAJERO);
     private static Usuario usuarioActual = null;
+    private static UserService userService = UserService.userServiceGetInstance();
+
+    
     private static Caja caja = new Caja(new Balance(0), primerUsuario);
     private static List<Combo> combos = new ArrayList<>();
     private static List<Producto> productos = new ArrayList<>();
 
     public static void main(String[] args) {
 
-        int seguirIngresando = 1;
+        userService.addUser(primerUsuario);
+        
         productos.add(new Producto("BIGMAC", 450, TAMAÑO.CHICO));
         productos.add(new Producto("BIGMAC", 550, TAMAÑO.MEDIANO));
         productos.add(new Producto("BIGMAC", 800, TAMAÑO.GRANDE));
@@ -32,48 +37,101 @@ public class Main {
         productosParaCombo.add(productos.get(0));
         productosParaCombo.add(productos.get(3));
         combos.add(new Combo("MEGADIBU", 2000, productosParaCombo));
-
+        
+        
+        int seguirIngresando = 1;
         do {
-            menuCajero();
-            System.out.println("DESEA VOLVER AL MENU? 1-SI ,2-NO");
-            seguirIngresando = Integer.parseInt(entrada.nextLine());
-            while (seguirIngresando < 1 || seguirIngresando > 2) {
-                System.out.println("ERROR, INGRESE NUEVAMENTE");
-                System.out.println("DESEA VOLVER AL MENU? 1-SI ,2-NO");
+            
+            login();
+            if(userService.isAdmin(usuarioActual)){
+                menuAdmin();
+                System.out.println("1. INGRESAR CON OTRA CUENTA");
+                System.out.println("2. SALIR");
                 seguirIngresando = Integer.parseInt(entrada.nextLine());
-
+                while (seguirIngresando < 1 || seguirIngresando > 2) {
+                    System.out.println("1. INGRESAR CON OTRA CUENTA");
+                    System.out.println("2. SALIR");
+                    seguirIngresando = Integer.parseInt(entrada.nextLine());
+                }
             }
+            if(!userService.isAdmin(usuarioActual)){
+                menuCajero();
+                System.out.println("1. INGRESAR CON OTRA CUENTA");
+                System.out.println("2. SALIR");
+                seguirIngresando = Integer.parseInt(entrada.nextLine());
+                while (seguirIngresando < 1 || seguirIngresando > 2) {
+                    System.out.println("1. INGRESAR CON OTRA CUENTA");
+                    System.out.println("2. SALIR");
+                    seguirIngresando = Integer.parseInt(entrada.nextLine());
+                }
+            }
+            
         } while (seguirIngresando == 1);
 
     }
 
-    private static void menuCajero() {
-        System.out.println("Digite la opcion");
-        System.out.println("OPCIONES:");
-        System.out.println("1- GENERAR VENTA");
-        System.out.println("2- CREAR PRODUCTO");
-        System.out.println("3- CREAR COMBO");
-        int opcion = Integer.parseInt(entrada.nextLine());
-        while (opcion < 1 || opcion > 3) {
-            System.out.println("ERROR, INGRESE NUEVAMENTE");
+    private static void menuAdmin() {
+        int opcion = 0;
+        do{
             System.out.println("Digite la opcion");
             System.out.println("OPCIONES:");
             System.out.println("1- GENERAR VENTA");
             System.out.println("2- CREAR PRODUCTO");
             System.out.println("3- CREAR COMBO");
+            System.out.println("4- BALANCE");
+            System.out.println("5- SALIR");
             opcion = Integer.parseInt(entrada.nextLine());
-        }
+            while (opcion < 1 || opcion > 5) {
+                System.out.println("ERROR, INGRESE NUEVAMENTE");
+                System.out.println("Digite la opcion");
+                System.out.println("OPCIONES:");
+                System.out.println("1- GENERAR VENTA");
+                System.out.println("2- CREAR PRODUCTO");
+                System.out.println("3- CREAR COMBO");
+                System.out.println("4- BALANCE");
+                System.out.println("5- SALIR");
 
-        switch (opcion) {
-            case 1 ->
-                menuVenta();
-            case 2 ->
-                menuCrearProducto();
-            case 3 ->
-                menuCrearCombo();
-        }
+                opcion = Integer.parseInt(entrada.nextLine());
+            }
+
+            switch (opcion) {
+                case 1 ->
+                    menuVenta();
+                case 2 ->
+                    menuCrearProducto();
+                case 3 ->
+                    menuCrearCombo();
+            }
+            
+        }while(opcion!=5);
     }
+    
+    private static void menuCajero(){
+        int opcion = 0;
+        do{
+            System.out.println("Digite la opcion");
+            System.out.println("OPCIONES:");
+            System.out.println("1- GENERAR VENTA");
+            System.out.println("2- SALIR");
+            opcion = Integer.parseInt(entrada.nextLine());
+            while (opcion < 1 || opcion > 5) {
+                System.out.println("ERROR, INGRESE NUEVAMENTE");
+                System.out.println("Digite la opcion");
+                System.out.println("OPCIONES:");
+                System.out.println("1- GENERAR VENTA");
+                System.out.println("2- SALIR");
 
+                opcion = Integer.parseInt(entrada.nextLine());
+            }
+
+            switch (opcion) {
+                case 1 ->
+                    menuVenta();
+            }
+            
+        }while(opcion!=2);
+    }
+    
     private static void menuVenta() {
         VentaService service = new VentaService();
         service.generarVenta(productos, combos, entrada, caja);
@@ -131,7 +189,6 @@ public class Main {
     }
 
     private static void login() {
-        UserService userService = UserService.userServiceGetInstance();
 
         do {
             Scanner in = new Scanner(System.in);
