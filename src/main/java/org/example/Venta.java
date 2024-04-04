@@ -1,11 +1,13 @@
 package org.example;
-
+import java.time.LocalDate;
+import java.util.Date;
 
 
 public class Venta {
 
     private Pedido pedido;
     private double valorTotal;
+    Balance bal = new Balance( 0);
 
     public Venta(Pedido pedido) {
         this.pedido = pedido;
@@ -21,7 +23,7 @@ public class Venta {
         for(Combo c:pedido.getCombos()){
             valor += c.getPrecio();
         }
-
+        bal.IncrementarBalance(valor);
         return valor;
     }
     

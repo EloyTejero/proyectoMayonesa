@@ -111,7 +111,7 @@ public class Main {
                     menuCrearProducto();
                 case 3 ->
                     menuCrearCombo();
-                case 4 -> System.out.println("asd"); 
+                case 4 -> caja.getValorFinalBalance(); 
                 case 5 -> anadirUsuarios();
                 case 6 -> verUsuarios();
                 case 7 -> eliminarUsuarios();
