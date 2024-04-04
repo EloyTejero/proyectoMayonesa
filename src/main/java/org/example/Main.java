@@ -111,7 +111,7 @@ public class Main {
                     menuCrearProducto();
                 case 3 ->
                     menuCrearCombo();
-                case 4 -> caja.getValorFinalBalance(); 
+                case 4 ->System.out.println(caja.getValorFinalBalance()); 
                 case 5 -> anadirUsuarios();
                 case 6 -> verUsuarios();
                 case 7 -> eliminarUsuarios();
@@ -157,9 +157,23 @@ public class Main {
         String nombre = entrada.nextLine();
         System.out.println("digite el precio");
         double precio = Double.parseDouble(entrada.nextLine());
+         while (precio <= 0) {
+            System.out.println("ERROR, INGRESE NUEVAMENTE");
+            System.out.println("digite el precio");
+
+            precio = Double.parseDouble(entrada.nextLine());
+
+        }
         System.out.println("Ingrese el Tamaño");
         mostrarListas(Arrays.stream(TAMAÑO.values()).toList());
         int indexTamaño = Integer.parseInt(entrada.nextLine()) - 1;
+        while (indexTamaño < 0 || indexTamaño > Arrays.stream(TAMAÑO.values()).toList().size() - 1) {
+            System.out.println("ERROR, INGRESE NUEVAMENTE");
+            System.out.println("Ingrese el Tamaño");
+            indexTamaño = Integer.parseInt(entrada.nextLine()) - 1;
+
+        }
+
         TAMAÑO tamaño = TAMAÑO.values()[indexTamaño];
         productos.add(new Producto(nombre, precio, tamaño));
 
@@ -171,6 +185,11 @@ public class Main {
         String nombre = entrada.nextLine();
         System.out.println("digite el precio");
         double precio = Double.parseDouble(entrada.nextLine());
+          while (precio <= 0) {
+            System.out.println("ERROR, INGRESE NUEVAMENTE");
+            System.out.println("digite el precio");
+            precio = Double.parseDouble(entrada.nextLine());
+          }
         int ingresar = 1;
         do {
             System.out.println("ELIJA LOS PRODUCTOS PARA SU COMBO");

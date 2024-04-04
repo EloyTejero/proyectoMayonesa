@@ -23,7 +23,6 @@ public class Venta {
         for(Combo c:pedido.getCombos()){
             valor += c.getPrecio();
         }
-        bal.IncrementarBalance(valor);
         return valor;
     }
     
