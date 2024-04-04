@@ -1,7 +1,9 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.example.enums.ROL;
 
@@ -11,7 +13,7 @@ import org.example.enums.ROL;
  */
 public class UserService {
     private static UserService instancia;
-    private final Map<String, Usuario> credenciales;
+    private final Map<Integer, Usuario> credenciales;
     
     public static UserService userServiceGetInstance(){
         if(instancia==null){
@@ -24,12 +26,12 @@ public class UserService {
         credenciales = new HashMap<>();
     }
     
-    public Usuario login(String nombre, String password) {
+    public Usuario login(Integer dni, String password) {
         String storedPassword=null;
-        if(credenciales.get(nombre)!=null){
-            storedPassword = credenciales.get(nombre).getContraseña();  
+        if(credenciales.get(dni)!=null){
+            storedPassword = credenciales.get(dni).getContraseña();  
             if(password.equals(storedPassword)){
-              return credenciales.get(nombre);
+              return credenciales.get(dni);
             }
         }
         
@@ -37,14 +39,14 @@ public class UserService {
     }
     
     public void addUser(Usuario user){
-        if(getUser(user.getNombre())==null){
-            credenciales.put(user.getNombre(), user);
+        if(getUserByDni(user.getDni())==null){
+            credenciales.put(user.getDni(), user);
         }
         //throw error si ya existe el usuario
     }
     
     public void deleteUser(Usuario user){
-        credenciales.remove(user.getNombre(),user);
+        credenciales.remove(user.getDni(),user);
     }
     
     public void cargaUsers(ArrayList<Usuario>usuarios){
@@ -59,5 +61,13 @@ public class UserService {
     
     public boolean isAdmin(Usuario user){
         return user.getRol() == ROL.GERENTE || user.getRol() == ROL.SUPERVISOR;
+    }
+    
+    public Usuario getUserByDni(int dni){
+        return credenciales.get(dni);
+    }
+    
+    public Collection<Usuario> getUsers(){
+        return credenciales.values();
     }
 }
