@@ -47,7 +47,8 @@ public class VentaService {
                 pedido.añadirCombo(comboElegido);
 
             } else {
-                mostrarListas(productos);
+
+               mostrarListas(productos);
                 System.out.println("INGRESE EL ID DEL PRODUCTO QUE DESEA AGREGAR AL PEDIDO");
                 eleccionComida = Integer.parseInt(entrada.nextLine()) - 1;
                 while (eleccionComida < 0 || eleccionComida > productos.size() - 1) {
@@ -73,37 +74,55 @@ public class VentaService {
         venta.imprimirTicket();
     }
 
-    private void agrandarCombo(Combo combo, List<Producto> productos, Scanner entrada) {
-        mostrarListas(combo.getProductos());
-        System.out.println("Ingrese el ID del producto a agrandar");
-        int id = Integer.parseInt(entrada.nextLine()) - 1;
-        while (id < 0 || id > combo.getProductos().size() - 1) { 
-            System.out.println("ID NO INVALIDO, INGRESE NUEVAMENTE");
-            System.out.println("Ingrese el ID del producto a agrandar");
-            id = Integer.parseInt(entrada.nextLine()) - 1;
-        }
-        Producto productoAAgrandar = combo.getProductos().get(id);
-        System.out.println("INGRESE EL ID DEL TAMAÑO A AGRANDAR");
-
-        
-        List<TAMAÑO> listaTamaños= new ArrayList<>(EnumSet.allOf(TAMAÑO.class));
-        listaTamaños.remove(productoAAgrandar.getTamaño());
-        mostrarListas(listaTamaños);
-
-        int idAgrandar = Integer.parseInt(entrada.nextLine()) - 1;
-        while (idAgrandar < 0 || idAgrandar > listaTamaños.size() - 1) {
-            System.out.println("ID NO INVALIDO, INGRESE NUEVAMENTE");
-            System.out.println("Ingrese el ID del producto a agrandar");
-            idAgrandar = Integer.parseInt(entrada.nextLine()) - 1;
-        }
-        TAMAÑO tamañoNuevo = TAMAÑO.values()[idAgrandar];
-        Producto productoAgrandado = null;
-        for (Producto p : productos) {
-            if (p.getNombre().equals(productoAAgrandar.getNombre()) && p.getTamaño().equals(tamañoNuevo)) {
-                productoAgrandado = p;
-                break;
+    private ArrayList<Producto> obtenerProductosPosiblesDeAgrandar(Combo combo, List<Producto> productos){
+        ArrayList<Producto> productosPosibles = new ArrayList<>();
+        for (int i=0;i<combo.getProductos().size();i++ ){
+            for (int j=0;j<productos.size();j++){
+                if (combo.getProductos().get(i).getNombre().equals(productos.get(j).getNombre()) && combo.getProductos().get(i).getTamaño() !=  productos.get(j).getTamaño() ){
+                    productosPosibles.add(combo.getProductos().get(i));
+                    break;
+                }
             }
         }
+        return productosPosibles;
+    }
+    private ArrayList<Producto> obtenerProductosAgrandados(Producto producto, List<Producto> productos){
+        ArrayList<Producto> productosPosibles = new ArrayList<>();
+            for (int i=0;i<productos.size();i++){
+                if (producto.getNombre().equals(productos.get(i).getNombre()) && producto.getTamaño() != productos.get(i).getTamaño()){
+                    productosPosibles.add(productos.get(i));
+                    break;
+                }
+            }
+        return productosPosibles;
+    }
+
+
+    private void agrandarCombo(Combo combo, List<Producto> productos, Scanner entrada) {
+        ArrayList<Producto> productosDisponiblesParaAgrandar = obtenerProductosPosiblesDeAgrandar(combo, productos);
+        mostrarListas(obtenerProductosPosiblesDeAgrandar(combo, productos));
+        System.out.println("Ingrese el ID del producto a agrandar");
+        int id = Integer.parseInt(entrada.nextLine()) -1 ;
+        while (id < 0 || id > productosDisponiblesParaAgrandar.size() - 1) {
+            System.out.println("ID NO INVALIDO, INGRESE NUEVAMENTE");
+            System.out.println("Ingrese el ID del producto a agrandar");
+            id = Integer.parseInt(entrada.nextLine()) -1;
+        }
+        Producto productoAAgrandar = productosDisponiblesParaAgrandar.get(id);
+        System.out.println("INGRESE EL ID DEL TAMAÑO A AGRANDAR");
+
+        ArrayList<Producto> listaProductosAgrandados = obtenerProductosAgrandados(productoAAgrandar, productos) ;
+
+        mostrarListas(listaProductosAgrandados);
+
+        int idAgrandar = Integer.parseInt(entrada.nextLine())-1 ;
+        while (idAgrandar < 0 || idAgrandar > listaProductosAgrandados.size() - 1) {
+            System.out.println("ID NO INVALIDO, INGRESE NUEVAMENTE");
+            System.out.println("Ingrese el ID del producto a agrandar");
+            idAgrandar = Integer.parseInt(entrada.nextLine())-1 ;
+        }
+     
+        Producto productoAgrandado = listaProductosAgrandados.get(idAgrandar);
         combo.agrandarProducto(productoAAgrandar, productoAgrandado);
         System.out.println("*---------------COMBO AGRANDADO---------------*");
     }
