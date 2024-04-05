@@ -3,11 +3,8 @@ package org.example;
 import org.example.enums.ROL;
 import org.example.enums.TAMAÑO;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
 
 public class Main {
 
@@ -261,10 +258,10 @@ public class Main {
         Usuario user = new Usuario(nombre, dni, contraseña, rol);
         
         if(userService.getUserByDni(dni)!=null){
-            userService.addUser(user);
+            System.out.println("EL USUARIO YA EXISTE");
         }
         else{
-            System.out.println("EL USUARIO YA EXISTE");
+            userService.addUser(user);
         }
     }
     
